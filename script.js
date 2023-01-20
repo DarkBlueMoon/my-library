@@ -8,10 +8,6 @@ class Book {
     this.pages = pages;
     this.hasRead = hasRead ? "read" : "not read yet";
   }
-
-  info() {
-    return `${this.title} by ${this.author}, ${this.pages} pages, ${this.hasRead}`;
-  }
 }
 
 function addBookToLibrary(title, author, numPages, hasRead) {
@@ -20,22 +16,10 @@ function addBookToLibrary(title, author, numPages, hasRead) {
   );
 }
 
-const theHobbit = new Book("The Hobbit", "J.R.R. Tolkien", 295, false);
-myLibrary.push(theHobbit);
-
-const theFellowship = new Book(
-  "The Fellowship of the Ring",
-  "J.R.R. Tolkien",
-  423,
-  false
-);
-myLibrary.push(theFellowship);
-
-const inkheart = new Book("Inkheart", "Cornelia Funke", 534, true);
-myLibrary.push(inkheart);
-
-const matilda = new Book("Matilda", "Roald Dahl", 232, true);
-myLibrary.push(matilda);
+addBookToLibrary("The Hobbit", "J.R.R. Tolkien", 295, false);
+addBookToLibrary("The Fellowship of the Ring", "J.R.R. Tolkien", 423, false);
+addBookToLibrary("Inkheart", "Cornelia Funke", 534, true);
+addBookToLibrary("Matilda", "Roald Dahl", 232, true);
 
 function createTableTextNode(data) {
   const dataNode = document.createElement("td");
@@ -46,12 +30,12 @@ function createTableTextNode(data) {
 }
 
 function createTableButtonNode(data, btnClass) {
-  const dataNode = document.createElement("td");
   const dataButton = document.createElement("button");
+  const dataNode = document.createElement("td");
   const dataText = document.createTextNode(data);
   dataButton.appendChild(dataText);
-  dataButton.classList.add(btnClass);
   dataNode.appendChild(dataButton);
+  dataButton.classList.add(btnClass);
 
   return dataNode;
 }
@@ -79,3 +63,15 @@ function displayBooks(library) {
 }
 
 displayBooks(myLibrary);
+
+const toggleBtns = document.querySelectorAll(".toggleRead");
+const deleteBtns = document.querySelectorAll(".delete");
+
+// btn.parentElement.previousElementSibling.textContent;
+
+// toggleBtns.forEach((btn) => {
+//   btn.addEventListener("click", (e) => {
+//     // const target = e.target;
+//     // console.log(target.parentElement.previousElementSibling.textContent);
+//   });
+// });
