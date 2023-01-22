@@ -36,6 +36,7 @@ function createTableButtonNode(data, btnClass) {
   dataButton.appendChild(dataText);
   dataNode.appendChild(dataButton);
   dataButton.classList.add(btnClass);
+  dataButton.addEventListener("click", handleBtnClick);
 
   return dataNode;
 }
@@ -56,22 +57,42 @@ function createTableBookEntry(book) {
   tableBody.appendChild(createTableRow(book));
 }
 
+function assignDataIndexToTableElements() {
+  const tableRows = [...tableBody.rows];
+  tableRows.forEach((row, index) => {
+    row.setAttribute("data-index", index);
+  });
+}
+
 function displayBooks(library) {
   library.forEach((book) => {
     createTableBookEntry(book);
   });
+  assignDataIndexToTableElements();
+}
+
+function clearTable() {
+  tableBody.innerHTML = "";
+}
+
+function findDataIndexFromBtn(btn) {
+  const btnContainerRow = btn.parentNode.parentNode;
+  return parseInt(btnContainerRow.getAttribute("data-index"), 10);
+}
+
+function handleBtnClick() {
+  // 1: Find index of table row
+  const index = findDataIndexFromBtn(this);
+  // 2: Find class of btn
+  const btnClassList = this.classList;
+  if (btnClassList.contains("delete")) {
+    myLibrary.splice(index, 1);
+    clearTable();
+    displayBooks(myLibrary);
+  }
+  // else if (btnClassList.contains("toggleRead")) {
+  //   console.log("toggleRead");
+  // }
 }
 
 displayBooks(myLibrary);
-
-const toggleBtns = document.querySelectorAll(".toggleRead");
-const deleteBtns = document.querySelectorAll(".delete");
-
-// btn.parentElement.previousElementSibling.textContent;
-
-// toggleBtns.forEach((btn) => {
-//   btn.addEventListener("click", (e) => {
-//     // const target = e.target;
-//     // console.log(target.parentElement.previousElementSibling.textContent);
-//   });
-// });
