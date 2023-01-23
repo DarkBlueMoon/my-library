@@ -21,56 +21,6 @@ addBookToLibrary("The Fellowship of the Ring", "J.R.R. Tolkien", 423, false);
 addBookToLibrary("Inkheart", "Cornelia Funke", 534, true);
 addBookToLibrary("Matilda", "Roald Dahl", 232, true);
 
-function createTableTextNode(data) {
-  const dataNode = document.createElement("td");
-  const dataText = document.createTextNode(data);
-  dataNode.appendChild(dataText);
-
-  return dataNode;
-}
-
-function createTableButtonNode(data, btnClass) {
-  const dataButton = document.createElement("button");
-  const dataNode = document.createElement("td");
-  const dataText = document.createTextNode(data);
-  dataButton.appendChild(dataText);
-  dataNode.appendChild(dataButton);
-  dataButton.classList.add(btnClass);
-  dataButton.addEventListener("click", handleBtnClick);
-
-  return dataNode;
-}
-
-function createTableRow(book) {
-  const tr = document.createElement("tr");
-  tr.appendChild(createTableTextNode(book.title));
-  tr.appendChild(createTableTextNode(book.author));
-  tr.appendChild(createTableTextNode(book.pages));
-  tr.appendChild(createTableTextNode(book.hasRead));
-  tr.appendChild(createTableButtonNode("Toggle", "toggleRead"));
-  tr.appendChild(createTableButtonNode("Delete", "delete"));
-
-  return tr;
-}
-
-function createTableBookEntry(book) {
-  tableBody.appendChild(createTableRow(book));
-}
-
-function assignDataIndexToTableElements() {
-  const tableRows = [...tableBody.rows];
-  tableRows.forEach((row, index) => {
-    row.setAttribute("data-index", index);
-  });
-}
-
-function displayBooks(library) {
-  library.forEach((book) => {
-    createTableBookEntry(book);
-  });
-  assignDataIndexToTableElements();
-}
-
 function clearTable() {
   tableBody.innerHTML = "";
 }
@@ -80,19 +30,77 @@ function findDataIndexFromBtn(btn) {
   return parseInt(btnContainerRow.getAttribute("data-index"), 10);
 }
 
-function handleBtnClick() {
-  // 1: Find index of table row
-  const index = findDataIndexFromBtn(this);
-  // 2: Find class of btn
-  const btnClassList = this.classList;
-  if (btnClassList.contains("delete")) {
+function assignDataIndexToTableElements() {
+  const tableRows = [...tableBody.rows];
+  tableRows.forEach((row, index) => {
+    row.setAttribute("data-index", index);
+  });
+}
+
+function createTableNode(data, btnClass = null) {
+  const dataNode = document.createElement("td");
+  const dataText = document.createTextNode(data);
+
+  if (btnClass === null) {
+    dataNode.appendChild(dataText);
+  } else {
+    const dataButton = document.createElement("button");
+    dataButton.appendChild(dataText);
+    dataButton.classList.add(btnClass);
+    dataNode.appendChild(dataButton);
+  }
+
+  return dataNode;
+}
+
+function createTableRow(book) {
+  const tr = document.createElement("tr");
+  tr.appendChild(createTableNode(book.title));
+  tr.appendChild(createTableNode(book.author));
+  tr.appendChild(createTableNode(book.pages));
+  tr.appendChild(createTableNode(book.hasRead));
+  tr.appendChild(createTableNode("Toggle", "toggleRead"));
+  tr.appendChild(createTableNode("Delete", "delete"));
+
+  return tr;
+}
+
+function displayBooks(library) {
+  library.forEach((book) => {
+    tableBody.appendChild(createTableRow(book));
+  });
+  assignDataIndexToTableElements();
+}
+
+tableBody.addEventListener("click", (e) => {
+  const targ = e.target;
+
+  const index = findDataIndexFromBtn(targ);
+  if (targ.classList.contains("delete")) {
     myLibrary.splice(index, 1);
     clearTable();
     displayBooks(myLibrary);
+  } else if (targ.classList.contains("toggleRead")) {
   }
-  // else if (btnClassList.contains("toggleRead")) {
-  //   console.log("toggleRead");
-  // }
-}
+});
+
+// function handleBtnClick() {
+//   const index = findDataIndexFromBtn(this);
+
+//   const btnClassList = this.classList;
+//   if (btnClassList.contains("delete")) {
+//     myLibrary.splice(index, 1);
+//     clearTable();
+//     displayBooks(myLibrary);
+//   }
+//   // else if (btnClassList.contains("toggleRead")) {
+//   //   console.log("toggleRead");
+//   // }
+// }
+
+// const deleteBtns = document.querySelectorAll(".delete");
+// deleteBtns.forEach((btn) => {
+//   btn.addEventListener("click", handleBtnClick);
+// });
 
 displayBooks(myLibrary);
