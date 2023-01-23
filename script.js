@@ -2,11 +2,21 @@ const myLibrary = [];
 const tableBody = document.querySelector("tbody");
 
 class Book {
-  constructor(title, author, pages, hasRead) {
+  constructor(title, author, pages, readBool) {
     this.title = title;
     this.author = author;
     this.pages = pages;
-    this.hasRead = hasRead ? "read" : "not read yet";
+    this.hasReadBoolean = readBool;
+    this.hasReadText = this.hasReadBoolean ? "read" : "not read yet";
+  }
+
+  updateReadStatusText() {
+    this.hasReadText = this.hasReadBoolean ? "read" : "not read yet";
+  }
+
+  toggleReadStatus() {
+    this.hasReadBoolean = !this.hasReadBoolean;
+    this.updateReadStatusText();
   }
 }
 
@@ -58,7 +68,7 @@ function createTableRow(book) {
   tr.appendChild(createTableNode(book.title));
   tr.appendChild(createTableNode(book.author));
   tr.appendChild(createTableNode(book.pages));
-  tr.appendChild(createTableNode(book.hasRead));
+  tr.appendChild(createTableNode(book.hasReadText));
   tr.appendChild(createTableNode("Toggle", "toggleRead"));
   tr.appendChild(createTableNode("Delete", "delete"));
 
@@ -78,29 +88,12 @@ tableBody.addEventListener("click", (e) => {
   const index = findDataIndexFromBtn(targ);
   if (targ.classList.contains("delete")) {
     myLibrary.splice(index, 1);
-    clearTable();
-    displayBooks(myLibrary);
   } else if (targ.classList.contains("toggleRead")) {
+    myLibrary[index].toggleReadStatus();
   }
+
+  clearTable();
+  displayBooks(myLibrary);
 });
-
-// function handleBtnClick() {
-//   const index = findDataIndexFromBtn(this);
-
-//   const btnClassList = this.classList;
-//   if (btnClassList.contains("delete")) {
-//     myLibrary.splice(index, 1);
-//     clearTable();
-//     displayBooks(myLibrary);
-//   }
-//   // else if (btnClassList.contains("toggleRead")) {
-//   //   console.log("toggleRead");
-//   // }
-// }
-
-// const deleteBtns = document.querySelectorAll(".delete");
-// deleteBtns.forEach((btn) => {
-//   btn.addEventListener("click", handleBtnClick);
-// });
 
 displayBooks(myLibrary);
