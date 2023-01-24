@@ -30,18 +30,55 @@ tbody {
   border: 2px solid transparent;
 }
 
-/* .delete {
-  background-color: red;
-  color: white;
-} */
-
-/* .book-form {
-  display: flex;
-  flex-direction: column;
+.form-container {
+  visibility: hidden;
+  margin: 20px auto;
+  width: 50%;
   border: 1px solid black;
-  display: none;
 }
 
-.close-btn {
-  align-self: flex-end;
-} */
+.book-form {
+  display: grid;
+  padding: 0 20px;
+  /* background: linear-gradient(to right, #7f7fd5, #86a8e7, #91eae4); */
+  background: linear-gradient(
+    90deg,
+    hsla(177, 87%, 79%, 1) 0%,
+    hsla(235, 89%, 70%, 1) 100%
+  );
+}
+
+.form-row {
+  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: minmax(100px, 1fr) 2fr;
+}
+
+.form-button.close {
+  justify-self: end;
+}
+
+.form-button.close .close-btn {
+  margin: 10px 0;
+  padding: 5px 10px;
+}
+
+.form-button.submit {
+  align-self: center;
+}
+
+.form-button.submit .submit-btn {
+  margin: 10px 0;
+}
+
+.delete {
+  background-color: #db3069;
+  color: white;
+  font-weight: bold;
+}
+
+.toggle-read {
+  background-color: #3c3c3b;
+  color: white;
+  font-weight: bold;
+}

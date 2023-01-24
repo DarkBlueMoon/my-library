@@ -2,7 +2,18 @@ const myLibrary = [];
 const tableBody = document.querySelector("tbody");
 const addBookBtn = document.querySelector(".add-book");
 const bookForm = document.querySelector(".book-form");
+const formContainer = document.querySelector(".form-container");
 const submitBookBtn = document.querySelector(".submit-btn");
+const closeBookBtn = document.querySelector(".close-btn");
+
+addBookBtn.addEventListener("click", () => {
+  formContainer.style.visibility = "visible";
+});
+
+closeBookBtn.addEventListener("click", () => {
+  bookForm.reset();
+  formContainer.style.visibility = "hidden";
+});
 
 class Book {
   constructor(title, author, pages, readBool) {
@@ -72,7 +83,7 @@ function createTableRow(book) {
   tr.appendChild(createTableNode(book.author));
   tr.appendChild(createTableNode(book.pages));
   tr.appendChild(createTableNode(book.hasReadText));
-  tr.appendChild(createTableNode("Toggle", ["btn", "toggleRead"]));
+  tr.appendChild(createTableNode("Toggle", ["btn", "toggle-read"]));
   tr.appendChild(createTableNode("Delete", ["btn", "delete"]));
 
   return tr;
@@ -91,16 +102,12 @@ tableBody.addEventListener("click", (e) => {
   const index = findDataIndexFromBtn(targ);
   if (targ.classList.contains("delete")) {
     myLibrary.splice(index, 1);
-  } else if (targ.classList.contains("toggleRead")) {
+  } else if (targ.classList.contains("toggle-read")) {
     myLibrary[index].toggleReadStatus();
   }
 
   clearTable();
   displayBooks(myLibrary);
-});
-
-addBookBtn.addEventListener("click", () => {
-  bookForm.style.display = "block";
 });
 
 function validateRequiredInputs(elements) {
@@ -111,9 +118,7 @@ function validateRequiredInputs(elements) {
   return inputElements.every((element) => element.validity.valid);
 }
 
-submitBookBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-
+submitBookBtn.addEventListener("click", () => {
   const formElems = bookForm.elements;
 
   if (validateRequiredInputs(formElems)) {
@@ -126,11 +131,7 @@ submitBookBtn.addEventListener("click", (e) => {
     clearTable();
     displayBooks(myLibrary);
     bookForm.reset();
-    // console.log("success");
   }
-  // else {
-  //   alert("Please fill in all required fields.");
-  // }
 });
 
 displayBooks(myLibrary);
