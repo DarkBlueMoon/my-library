@@ -11,7 +11,7 @@
 table {
   border-collapse: collapse;
   border: 2px solid black;
-  margin: auto;
+  margin: 20px auto;
 }
 
 td,
@@ -23,3 +23,25 @@ th {
 tbody {
   text-align: center;
 }
+
+.btn {
+  padding: 5px 20px;
+  border-radius: 5px;
+  border: 2px solid transparent;
+}
+
+/* .delete {
+  background-color: red;
+  color: white;
+} */
+
+/* .book-form {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  display: none;
+}
+
+.close-btn {
+  align-self: flex-end;
+} */

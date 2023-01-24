@@ -1,5 +1,8 @@
 const myLibrary = [];
 const tableBody = document.querySelector("tbody");
+const addBookBtn = document.querySelector(".add-book");
+const bookForm = document.querySelector(".book-form");
+const submitBookBtn = document.querySelector(".submit-btn");
 
 class Book {
   constructor(title, author, pages, readBool) {
@@ -47,16 +50,16 @@ function assignDataIndexToTableElements() {
   });
 }
 
-function createTableNode(data, btnClass = null) {
+function createTableNode(data, classes = null) {
   const dataNode = document.createElement("td");
   const dataText = document.createTextNode(data);
 
-  if (btnClass === null) {
+  if (classes === null) {
     dataNode.appendChild(dataText);
   } else {
     const dataButton = document.createElement("button");
     dataButton.appendChild(dataText);
-    dataButton.classList.add(btnClass);
+    dataButton.classList.add(...classes);
     dataNode.appendChild(dataButton);
   }
 
@@ -69,8 +72,8 @@ function createTableRow(book) {
   tr.appendChild(createTableNode(book.author));
   tr.appendChild(createTableNode(book.pages));
   tr.appendChild(createTableNode(book.hasReadText));
-  tr.appendChild(createTableNode("Toggle", "toggleRead"));
-  tr.appendChild(createTableNode("Delete", "delete"));
+  tr.appendChild(createTableNode("Toggle", ["btn", "toggleRead"]));
+  tr.appendChild(createTableNode("Delete", ["btn", "delete"]));
 
   return tr;
 }
@@ -94,6 +97,40 @@ tableBody.addEventListener("click", (e) => {
 
   clearTable();
   displayBooks(myLibrary);
+});
+
+addBookBtn.addEventListener("click", () => {
+  bookForm.style.display = "block";
+});
+
+function validateRequiredInputs(elements) {
+  const inputElements = Array.from(elements).filter(
+    (element) => element.nodeName === "INPUT"
+  );
+
+  return inputElements.every((element) => element.validity.valid);
+}
+
+submitBookBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  const formElems = bookForm.elements;
+
+  if (validateRequiredInputs(formElems)) {
+    addBookToLibrary(
+      formElems.title.value,
+      formElems.author.value,
+      formElems.pages.value,
+      formElems.hasRead.checked
+    );
+    clearTable();
+    displayBooks(myLibrary);
+    bookForm.reset();
+    // console.log("success");
+  }
+  // else {
+  //   alert("Please fill in all required fields.");
+  // }
 });
 
 displayBooks(myLibrary);
